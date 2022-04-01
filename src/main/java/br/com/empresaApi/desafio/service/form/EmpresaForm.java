@@ -1,11 +1,11 @@
 package br.com.empresaApi.desafio.service.form;
 
+import br.com.empresaApi.desafio.service.form.att.*;
+
 import java.util.ArrayList;
 
-public class EmpresaDto {
-
-
-    private  ArrayList<AtividadePrincipalDto> atividade_principal = new ArrayList<>();
+public class EmpresaForm {
+    private ArrayList<AtividadePrincipalForm> atividade_principal = new ArrayList<>();
     private String data_situacao;
     private String complemento;
     private String tipo;
@@ -13,8 +13,8 @@ public class EmpresaDto {
     private String uf;
     private String telefone;
     private String email;
-    private ArrayList<AtividadeSecundariaDto> atividades_secundarias = new ArrayList<>();
-    private ArrayList<QsaDto> qsa = new ArrayList<>();
+    private ArrayList<AtividadeSecundariaForm> atividades_secundarias = new ArrayList<>();
+    private ArrayList<QsaForm> qsa = new ArrayList<>();
     private String situacao;
     private String bairro;
     private String logradouro;
@@ -36,11 +36,11 @@ public class EmpresaDto {
     private Extra ExtraObject;
     private Billing BillingObject;
 
-    public ArrayList<AtividadePrincipalDto> getAtividade_principal() {
+    public ArrayList<AtividadePrincipalForm> getAtividade_principal() {
         return atividade_principal;
     }
 
-    public void setAtividade_principal(ArrayList<AtividadePrincipalDto> atividade_principal) {
+    public void setAtividade_principal(ArrayList<AtividadePrincipalForm> atividade_principal) {
         this.atividade_principal = atividade_principal;
     }
 
@@ -100,19 +100,19 @@ public class EmpresaDto {
         this.email = email;
     }
 
-    public ArrayList<AtividadeSecundariaDto> getAtividades_secundarias() {
+    public ArrayList<AtividadeSecundariaForm> getAtividades_secundarias() {
         return atividades_secundarias;
     }
 
-    public void setAtividades_secundarias(ArrayList<AtividadeSecundariaDto> atividades_secundarias) {
+    public void setAtividades_secundarias(ArrayList<AtividadeSecundariaForm> atividades_secundarias) {
         this.atividades_secundarias = atividades_secundarias;
     }
 
-    public ArrayList<QsaDto> getQsa() {
+    public ArrayList<QsaForm> getQsa() {
         return qsa;
     }
 
-    public void setQsa(ArrayList<QsaDto> qsa) {
+    public void setQsa(ArrayList<QsaForm> qsa) {
         this.qsa = qsa;
     }
 
@@ -274,5 +274,41 @@ public class EmpresaDto {
 
     public void setBillingObject(Billing billingObject) {
         BillingObject = billingObject;
+    }
+
+    @Override
+    public String toString() {
+        return "EmpresaDto{" +
+                "atividade_principal=" + atividade_principal +
+                ", data_situacao='" + data_situacao + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", uf='" + uf + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                ", atividades_secundarias=" + atividades_secundarias +
+                ", qsa=" + qsa +
+                ", situacao='" + situacao + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", logradouro='" + logradouro + '\'' +
+                ", numero='" + numero + '\'' +
+                ", cep='" + cep + '\'' +
+                ", municipio='" + municipio + '\'' +
+                ", porte='" + porte + '\'' +
+                ", abertura='" + abertura + '\'' +
+                ", natureza_juridica='" + natureza_juridica + '\'' +
+                ", fantasia='" + fantasia + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                ", ultima_atualizacao='" + ultima_atualizacao + '\'' +
+                ", status='" + status + '\'' +
+                ", efr='" + efr + '\'' +
+                ", motivo_situacao='" + motivo_situacao + '\'' +
+                ", situacao_especial='" + situacao_especial + '\'' +
+                ", data_situacao_especial='" + data_situacao_especial + '\'' +
+                ", capital_social='" + capital_social + '\'' +
+                ", ExtraObject=" + ExtraObject +
+                ", BillingObject=" + BillingObject +
+                '}';
     }
 }

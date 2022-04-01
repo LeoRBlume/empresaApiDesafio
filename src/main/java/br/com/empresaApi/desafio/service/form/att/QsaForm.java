@@ -1,12 +1,12 @@
-package br.com.empresaApi.desafio.service.form;
+package br.com.empresaApi.desafio.service.form.att;
 
-public class QsaDto {
+public class QsaForm {
 
-    private String qual = "";
-    private String pais_origem = "";
-    private String nome_rep_legal = "";
-    private String qual_rep_legal = "";
-    private String nome = "";
+    private String qual ;
+    private String pais_origem ;
+    private String nome_rep_legal;
+    private String qual_rep_legal;
+    private String nome;
 
     public String getQual() {
         return qual;

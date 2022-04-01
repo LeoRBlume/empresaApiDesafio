@@ -1,8 +1,9 @@
-package br.com.empresaApi.desafio.service.form;
+package br.com.empresaApi.desafio.service.form.att;
 
-public class AtividadePrincipalDto {
+public class AtividadeSecundariaForm {
 
     private String text;
+
     private String code;
 
     public String getText() {
@@ -20,4 +21,5 @@ public class AtividadePrincipalDto {
     public void setCode(String code) {
         this.code = code;
     }
+
 }
