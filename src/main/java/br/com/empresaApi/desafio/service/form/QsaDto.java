@@ -1,4 +1,4 @@
-package br.com.empresaApi.desafio.controller.dto;
+package br.com.empresaApi.desafio.service.form;
 
 public class QsaDto {
 

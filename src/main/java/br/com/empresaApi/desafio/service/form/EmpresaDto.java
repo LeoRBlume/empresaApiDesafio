@@ -1,11 +1,11 @@
-package br.com.empresaApi.desafio.controller.dto;
+package br.com.empresaApi.desafio.service.form;
 
 import java.util.ArrayList;
 
 public class EmpresaDto {
 
 
-    private  ArrayList<AtividadePrincipalDto> atividade_principal = new ArrayList<AtividadePrincipalDto>();
+    private  ArrayList<AtividadePrincipalDto> atividade_principal = new ArrayList<>();
     private String data_situacao;
     private String complemento;
     private String tipo;
@@ -13,8 +13,8 @@ public class EmpresaDto {
     private String uf;
     private String telefone;
     private String email;
-    private ArrayList<AtividadeSecundariaDto> atividades_secundarias = new ArrayList<AtividadeSecundariaDto>();
-    private ArrayList<QsaDto> qsa = new ArrayList<QsaDto>();
+    private ArrayList<AtividadeSecundariaDto> atividades_secundarias = new ArrayList<>();
+    private ArrayList<QsaDto> qsa = new ArrayList<>();
     private String situacao;
     private String bairro;
     private String logradouro;

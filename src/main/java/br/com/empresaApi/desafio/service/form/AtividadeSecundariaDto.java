@@ -1,4 +1,4 @@
-package br.com.empresaApi.desafio.controller.dto;
+package br.com.empresaApi.desafio.service.form;
 
 public class AtividadeSecundariaDto {
 
@@ -20,5 +20,5 @@ public class AtividadeSecundariaDto {
     public void setCode(String code) {
         this.code = code;
     }
-    
+
 }
