@@ -37,9 +37,7 @@ public class UsuarioController {
     public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid UsuarioForm usuarioForm) {
         LOGGER.info("Chamando endpoint para cadastrar usuario...");
         ResponseEntity<String> response = useCase.cadastrarUsuario(usuarioForm);
-        LOGGER.info("Usuario cadastrado com sucesso!\n");
+        LOGGER.info("Metodo para cadastrar o usuario encerrado!\n");
         return response;
     }
-
-
 }

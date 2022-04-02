@@ -49,8 +49,8 @@ public class UsuarioUseCase {
             if (empresa == null)
                 return new ResponseEntity<>("Nenhuma empresa foi encontrada com esse CNPJ", HttpStatus.NOT_FOUND);
 
-            LOGGER.info("CNPJ valido, adcionando CNPJ");
-            usuario.setCnpj(empresa.getCnpj());
+            LOGGER.info("CNPJ valido, adcionando empresa");
+            usuario.setEmpresa(empresa);
 
             LOGGER.info("Criptografando a senha no banco");
             usuario.setSenha(passwordEncoder.encode(usuarioForm.getSenha()));
@@ -87,7 +87,7 @@ public class UsuarioUseCase {
     public ResponseEntity<?> obterUsuarioPorEmail(String email) {
         if (!validandoEmail(email)) return new ResponseEntity<>("Formato de email invalido!!", HttpStatus.BAD_REQUEST);
 
-        Optional<Usuario> usuarioOptional = usuarioRepository.getByEmail(email);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         if (usuarioOptional.isPresent()){
             return new ResponseEntity<>(usuarioOptional.get(), HttpStatus.OK);
         }
