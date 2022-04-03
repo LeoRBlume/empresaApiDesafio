@@ -21,10 +21,17 @@ public class UsuarioController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioController.class);
 
-    private boolean logado = false;
-
     @Autowired
     UsuarioUseCase useCase;
+    
+    @GetMapping
+    public ResponseEntity<UsuarioDto> obterUsuario(@RequestHeader(value = "Authorization") String token){
+        LOGGER.info("Metodo para retornar o usuario...");
+        System.out.println(token);
+        ResponseEntity<UsuarioDto> response = useCase.obterUsuario(token);
+        LOGGER.info("Usuario retornado!");
+        return response;
+    }
 
     @GetMapping
     @RequestMapping("/empresa")
@@ -50,4 +57,5 @@ public class UsuarioController {
         LOGGER.info("Metodo para cadastrar o usuario encerrado!");
         return response;
     }
+
 }

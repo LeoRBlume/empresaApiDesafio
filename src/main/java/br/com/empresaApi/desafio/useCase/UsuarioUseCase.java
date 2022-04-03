@@ -120,10 +120,10 @@ public class UsuarioUseCase {
             LOGGER.info("Atualizando o email do usuario");
             usuario.setEmail(form.getEmail());
         }
-
         if (form.getCnpj() != null) {
             LOGGER.info("Atualizando empresa");
             usuario.setEmpresa(empresaUseCase.obterEmpresaPorCnpj(form.getCnpj()));
+            System.out.println(usuario.getEmpresa());
         }
         if (form.getSenha() != null) {
             LOGGER.info("Atualizando a senha do usuario");
@@ -135,6 +135,13 @@ public class UsuarioUseCase {
 
         usuarioDto.converterAtualizacoes(usuario);
 
+        return ResponseEntity.ok(usuarioDto);
+    }
+
+    public ResponseEntity<UsuarioDto> obterUsuario(String token) {
+        token = tokenService.recuperarToken(token);
+        Usuario usuario = usuarioRepository.getById(tokenService.getIdUsuario(token));
+        UsuarioDto usuarioDto = UsuarioDto.converter(usuario);
         return ResponseEntity.ok(usuarioDto);
     }
 }

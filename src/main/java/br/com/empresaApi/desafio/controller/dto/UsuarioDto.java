@@ -7,13 +7,28 @@ public class UsuarioDto {
 
     private String nome;
     private String email;
-    private String senha = "Senha inalterada";
+    private String senha;
     private Empresa empresa;
+
+    public static UsuarioDto converter(Usuario usuario) {
+        return new UsuarioDto(usuario.getNome(), usuario.getEmail(), "Senha não pode ser retornada", usuario.getEmpresa());
+    }
+
+    public UsuarioDto() {
+    }
+
+    public UsuarioDto(String nome, String email, String senha, Empresa empresa) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.empresa = empresa;
+    }
 
     public void converterAtualizacoes(Usuario usuario) {
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.empresa = usuario.getEmpresa();
+        if (this.senha == null) this.setSenha("Senha inalterada");
     }
 
     public String getNome() {
