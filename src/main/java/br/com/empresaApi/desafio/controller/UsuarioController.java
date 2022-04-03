@@ -27,7 +27,6 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<UsuarioDto> obterUsuario(@RequestHeader(value = "Authorization") String token){
         LOGGER.info("Metodo para retornar o usuario...");
-        System.out.println(token);
         ResponseEntity<UsuarioDto> response = useCase.obterUsuario(token);
         LOGGER.info("Usuario retornado!");
         return response;

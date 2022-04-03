@@ -1,5 +1,6 @@
 package br.com.empresaApi.desafio.controller;
 
+import br.com.empresaApi.desafio.controller.form.AtualizacaoEmpresaForm;
 import br.com.empresaApi.desafio.model.Empresa;
 import br.com.empresaApi.desafio.useCase.EmpresaUseCase;
 import org.slf4j.Logger;
@@ -27,5 +28,12 @@ public class EmpresaController {
         return response;
     }
 
+    @PutMapping
+    public ResponseEntity<?> atualizandoEmpresa(@RequestHeader(value = "Authorization") String token, @RequestBody AtualizacaoEmpresaForm empresaForm){
+        LOGGER.info("Chamando endpoint para cadastrar uma empresa...");
+        ResponseEntity<?> response = useCase.atualizarEmpresa(token, empresaForm);
+        LOGGER.info("Endpoint para cadastro de empresa efetuado!!");
+        return response;
+    }
 
 }

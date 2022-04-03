@@ -1,7 +1,11 @@
 package br.com.empresaApi.desafio.useCase;
 
+import br.com.empresaApi.desafio.config.security.TokenService;
+import br.com.empresaApi.desafio.controller.form.AtualizacaoEmpresaForm;
 import br.com.empresaApi.desafio.model.Empresa;
+import br.com.empresaApi.desafio.model.Usuario;
 import br.com.empresaApi.desafio.repository.EmpresaRepository;
+import br.com.empresaApi.desafio.repository.UsuarioRepository;
 import br.com.empresaApi.desafio.service.EmpresaCnpjService;
 import br.com.empresaApi.desafio.service.form.EmpresaForm;
 import org.slf4j.Logger;
@@ -24,11 +28,15 @@ public class EmpresaUseCase {
     @Autowired
     EmpresaRepository repository;
 
+    @Autowired
+    TokenService tokenService;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
     public Empresa obterEmpresaPorCnpj(String cnpj) {
 
         LOGGER.info("Entrando no metodo para obter uma empresa por um CNPJ...");
-
-        String amazon_cnpj = "15436940000103";
 
         try {
 
@@ -64,12 +72,52 @@ public class EmpresaUseCase {
     }
 
     public ResponseEntity<?> cadastrarEmpresa(Empresa empresa) {
-        if (empresa.getCnpj() == null) return new ResponseEntity<>("O CNPJ não pode ser nulo", HttpStatus.BAD_REQUEST);
         Optional<Empresa> empresaOptional = repository.findById(empresa.getCnpj());
-        if(empresaOptional.isPresent()) {
+        if (empresaOptional.isPresent()) {
             return new ResponseEntity<>("CNPJ ja cadastrado", HttpStatus.CONFLICT);
-        }
-        else repository.save(empresa);
+        } else repository.save(empresa);
         return new ResponseEntity<>("Empresa cadastrada com sucesso!!", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> atualizarEmpresa(String token, AtualizacaoEmpresaForm empresaForm) {
+
+        token = tokenService.recuperarToken(token);
+        Usuario usuario = usuarioRepository.getById(tokenService.getIdUsuario(token));
+        Empresa empresaRepository = usuario.getEmpresa();
+
+        if (empresaForm.getNome() != null) {
+            LOGGER.info("Atualizando Nome da empresa");
+            empresaRepository.setNome(empresaForm.getNome());
+        }
+        if (empresaForm.getTelefone() != null) {
+            LOGGER.info("Atualizando Telefone da empresa");
+            empresaRepository.setTelefone(empresaForm.getTelefone());
+        }
+        if (empresaForm.getEmail() != null) {
+            LOGGER.info("Atualizando Email da empresa");
+            empresaRepository.setEmail(empresaForm.getEmail());
+        }
+        if (empresaForm.getSituacao() != null) {
+            LOGGER.info("Atualizando Situação da empresa");
+            empresaRepository.setSituacao(empresaForm.getSituacao());
+        }
+        if (empresaForm.getNumero() != null) {
+            LOGGER.info("Atualizando Numero da empresa");
+            empresaRepository.setNumero(empresaForm.getNumero());
+        }
+        if (empresaForm.getCep() != null) {
+            LOGGER.info("Atualizando Cep da empresa");
+            empresaRepository.setCep(empresaForm.getCep());
+        }
+        if (empresaForm.getFantasia() != null) {
+            LOGGER.info("Atualizando Fantasia da empresa");
+            empresaRepository.setFantasia(empresaForm.getFantasia());
+        }
+        if (empresaForm.getCapital_social() != null) {
+            LOGGER.info("Atualizando Capital social da empresa");
+            empresaRepository.setCapital_social(empresaForm.getCapital_social());
+        }
+        repository.save(empresaRepository);
+        return ResponseEntity.ok(empresaRepository);
     }
 }
