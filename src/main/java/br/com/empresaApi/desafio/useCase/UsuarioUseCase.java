@@ -122,12 +122,16 @@ public class UsuarioUseCase {
         }
 
         if (form.getCnpj() != null) {
+            LOGGER.info("Atualizando empresa");
             usuario.setEmpresa(empresaUseCase.obterEmpresaPorCnpj(form.getCnpj()));
         }
         if (form.getSenha() != null) {
+            LOGGER.info("Atualizando a senha do usuario");
             usuario.setSenha(passwordEncoder.encode(form.getSenha()));
             usuarioDto.setSenha("Senha alterada com sucesso!");
         }
+
+        usuarioRepository.save(usuario);
 
         usuarioDto.converterAtualizacoes(usuario);
 
