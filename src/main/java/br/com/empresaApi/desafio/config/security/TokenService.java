@@ -1,4 +1,4 @@
-package br.com.empresaApi.desafio.service;
+package br.com.empresaApi.desafio.config.security;
 
 import br.com.empresaApi.desafio.model.Usuario;
 import io.jsonwebtoken.Claims;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Service
@@ -50,4 +51,12 @@ public class TokenService {
         Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return Long.parseLong(claims.getSubject());
     }
+
+    public String recuperarToken(String token) {
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
+            return null;
+        }
+        return token.substring(7, token.length());
+    }
+
 }

@@ -1,4 +1,4 @@
-package br.com.empresaApi.desafio.service;
+package br.com.empresaApi.desafio.config.security;
 
 import br.com.empresaApi.desafio.model.Usuario;
 import br.com.empresaApi.desafio.repository.UsuarioRepository;

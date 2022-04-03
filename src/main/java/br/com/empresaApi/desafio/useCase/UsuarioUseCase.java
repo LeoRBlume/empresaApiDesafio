@@ -1,9 +1,12 @@
 package br.com.empresaApi.desafio.useCase;
 
+import br.com.empresaApi.desafio.config.security.TokenService;
+import br.com.empresaApi.desafio.controller.dto.UsuarioDto;
 import br.com.empresaApi.desafio.model.Empresa;
 import br.com.empresaApi.desafio.model.Usuario;
 import br.com.empresaApi.desafio.repository.UsuarioRepository;
-import br.com.empresaApi.desafio.service.form.UsuarioForm;
+import br.com.empresaApi.desafio.controller.form.AtualizacaoCadastroForm;
+import br.com.empresaApi.desafio.controller.form.UsuarioForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +25,19 @@ public class UsuarioUseCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioUseCase.class);
 
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Autowired
     EmpresaUseCase empresaUseCase;
 
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    TokenService tokenService;
+
     public ResponseEntity<String> cadastrarUsuario(UsuarioForm usuarioForm) {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         LOGGER.info("Iniciando metodo para cadastrar o usuario...");
 
         try {
@@ -45,12 +52,8 @@ public class UsuarioUseCase {
             usuario.setEmail(usuarioForm.getEmail());
 
             Empresa empresa = empresaUseCase.obterEmpresaPorCnpj(usuarioForm.getCnpj());
-
-            if (empresa == null)
-                return new ResponseEntity<>("Nenhuma empresa foi encontrada com esse CNPJ", HttpStatus.NOT_FOUND);
-
-            LOGGER.info("CNPJ valido, adcionando empresa");
             usuario.setEmpresa(empresa);
+
 
             LOGGER.info("Criptografando a senha no banco");
             usuario.setSenha(passwordEncoder.encode(usuarioForm.getSenha()));
@@ -59,15 +62,11 @@ public class UsuarioUseCase {
 
             LOGGER.info("Fim do metodo para cadastrar usuario!");
 
-
             return new ResponseEntity<>("Usuario cadastrado com sucesso!", HttpStatus.OK);
 
-        }
-        catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>("Email ja cadastrado!!", HttpStatus.BAD_REQUEST);
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Algum erro inesperado aconteceu", HttpStatus.BAD_REQUEST);
         }
@@ -88,9 +87,50 @@ public class UsuarioUseCase {
         if (!validandoEmail(email)) return new ResponseEntity<>("Formato de email invalido!!", HttpStatus.BAD_REQUEST);
 
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
-        if (usuarioOptional.isPresent()){
+        if (usuarioOptional.isPresent()) {
             return new ResponseEntity<>(usuarioOptional.get(), HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<Empresa> obterDadosEmpresaUsuario(String tokenBearer) {
+
+        Usuario usuario = obterUsuarioToken(tokenBearer);
+        return ResponseEntity.ok(usuario.getEmpresa());
+    }
+
+    private Usuario obterUsuarioToken(String tokenBearer) {
+        return usuarioRepository.getById(obterIdUsuario(tokenBearer));
+    }
+
+    private Long obterIdUsuario(String tokenBearer) {
+        String token = tokenService.recuperarToken(tokenBearer);
+        return tokenService.getIdUsuario(token);
+    }
+
+    public ResponseEntity<UsuarioDto> atualizarCadastro(String tokenBearer, AtualizacaoCadastroForm form) {
+        LOGGER.info("Metodo para atualizar o cadastro do usuario");
+        Usuario usuario = usuarioRepository.getById(obterIdUsuario(tokenBearer));
+        UsuarioDto usuarioDto = new UsuarioDto();
+
+        if (form.getNome() != null) {
+            LOGGER.info("Atualizando o nome do usuario");
+            usuario.setNome(form.getNome());
         }
-        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (form.getEmail() != null) {
+            LOGGER.info("Atualizando o email do usuario");
+            usuario.setEmail(form.getEmail());
+        }
+
+        if (form.getCnpj() != null) {
+            usuario.setEmpresa(empresaUseCase.obterEmpresaPorCnpj(form.getCnpj()));
+        }
+        if (form.getSenha() != null) {
+            usuario.setSenha(passwordEncoder.encode(form.getSenha()));
+            usuarioDto.setSenha("Senha alterada com sucesso!");
+        }
+
+        usuarioDto.converterAtualizacoes(usuario);
+
+        return ResponseEntity.ok(usuarioDto);
     }
 }

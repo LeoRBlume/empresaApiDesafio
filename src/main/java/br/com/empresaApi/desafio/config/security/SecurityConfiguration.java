@@ -1,8 +1,6 @@
 package br.com.empresaApi.desafio.config.security;
 
 import br.com.empresaApi.desafio.repository.UsuarioRepository;
-import br.com.empresaApi.desafio.service.AutenticacaoService;
-import br.com.empresaApi.desafio.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/usuario").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/empresa").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

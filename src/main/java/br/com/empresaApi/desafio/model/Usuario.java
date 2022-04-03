@@ -1,15 +1,18 @@
 package br.com.empresaApi.desafio.model;
 
+import br.com.empresaApi.desafio.controller.form.AtualizacaoCadastroForm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Usuario implements UserDetails {
+public class Usuario implements UserDetails, Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -108,5 +111,9 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void atualizarCadastro(AtualizacaoCadastroForm form) {
+
     }
 }

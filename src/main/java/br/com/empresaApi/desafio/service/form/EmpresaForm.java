@@ -278,7 +278,7 @@ public class EmpresaForm {
 
     @Override
     public String toString() {
-        return "EmpresaDto{" +
+        return "EmpresaForm{" +
                 "atividade_principal=" + atividade_principal +
                 ", data_situacao='" + data_situacao + '\'' +
                 ", complemento='" + complemento + '\'' +

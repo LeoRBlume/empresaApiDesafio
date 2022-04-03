@@ -1,4 +1,4 @@
-package br.com.empresaApi.desafio.service.form;
+package br.com.empresaApi.desafio.controller.form;
 
 import org.hibernate.validator.constraints.Length;
 

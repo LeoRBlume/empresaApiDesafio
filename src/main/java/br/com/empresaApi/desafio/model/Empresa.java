@@ -4,22 +4,45 @@ import br.com.empresaApi.desafio.service.form.EmpresaForm;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Empresa {
     @Id
+    @NotNull
+    @NotBlank
     private String cnpj;
+    @NotNull
     private String nome;
+    @NotNull
     private String telefone;
+    @NotNull
     private String email;
+    @NotNull
     private String situacao;
+    @NotNull
     private String numero;
+    @NotNull
     private String cep;
+    @NotNull
     private String fantasia;
-
+    @NotNull
     private Double capital_social;
 
     public Empresa() {
+    }
+
+    public Empresa(String cnpj, String nome, String telefone, String email, String situacao, String numero, String cep, String fantasia, Double capital_social) {
+        this.cnpj = cnpj;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.situacao = situacao;
+        this.numero = numero;
+        this.cep = cep;
+        this.fantasia = fantasia;
+        this.capital_social = capital_social;
     }
 
     public Empresa(EmpresaForm empresaForm) {
@@ -32,6 +55,10 @@ public class Empresa {
         this.fantasia = empresaForm.getFantasia();
         this.cnpj = empresaForm.getCnpj();
         this.capital_social = (empresaForm.getCapital_social() != null && empresaForm.getCapital_social().equals("")) ? Double.parseDouble(empresaForm.getCapital_social()) : 0.0;
+    }
+
+    public static Empresa init(String cnpj) {
+        return new Empresa(cnpj, "", "", "", "", "", "", "", 0.0);
     }
 
     public String getNome() {

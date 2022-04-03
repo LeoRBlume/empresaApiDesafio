@@ -51,13 +51,25 @@ public class EmpresaUseCase {
                     LOGGER.info("Empresa cadastrada!");
                     return empresa;
                 } else {
-                    LOGGER.info("Nenhuma empresa encontrada com o CNPJ: " + cnpj);
-                    return null;
+                    LOGGER.info("Nenhuma empresa encontrada com o CNPJ, criando uma do zero");
+                    Empresa empresa = Empresa.init(cnpj);
+                    repository.save(empresa);
+                    return empresa;
                 }
             }
         } catch (Exception e) {
             LOGGER.info("Um erro inesperado aconteceu");
             return null;
         }
+    }
+
+    public ResponseEntity<?> cadastrarEmpresa(Empresa empresa) {
+        if (empresa.getCnpj() == null) return new ResponseEntity<>("O CNPJ não pode ser nulo", HttpStatus.BAD_REQUEST);
+        Optional<Empresa> empresaOptional = repository.findById(empresa.getCnpj());
+        if(empresaOptional.isPresent()) {
+            return new ResponseEntity<>("CNPJ ja cadastrado", HttpStatus.CONFLICT);
+        }
+        else repository.save(empresa);
+        return new ResponseEntity<>("Empresa cadastrada com sucesso!!", HttpStatus.OK);
     }
 }
