@@ -28,6 +28,7 @@ public class ErroDeValidacaoHandler {
         fieldErrors.forEach(e -> {
             String mensagem = messageSource.getMessage(e, LocaleContextHolder.getLocale());
             ErroDeFormularioDto erro = new ErroDeFormularioDto(e.getField(), mensagem);
+            if (erro.getErro().startsWith("must match ")) erro.setErro("CNPJ no formato invalido!!");
             dto.add(erro);
         });
 

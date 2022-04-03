@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Empresa {
     @Id
     @NotNull
     @NotBlank
+    @Pattern(regexp = "(^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$)")
     private String cnpj;
     @NotNull
     private String nome;

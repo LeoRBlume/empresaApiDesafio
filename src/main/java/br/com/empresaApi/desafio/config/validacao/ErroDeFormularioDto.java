@@ -17,4 +17,12 @@ public class ErroDeFormularioDto {
     public String getErro() {
         return erro;
     }
+
+    public void setCampo(String campo) {
+        this.campo = campo;
+    }
+
+    public void setErro(String erro) {
+        this.erro = erro;
+    }
 }
