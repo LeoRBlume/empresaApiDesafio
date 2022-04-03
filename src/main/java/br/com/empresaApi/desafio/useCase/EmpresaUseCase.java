@@ -11,6 +11,7 @@ import br.com.empresaApi.desafio.service.form.EmpresaForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class EmpresaUseCase {
 
             } else {
                 LOGGER.info("Empresa não cadastrada, acessando o serviço para buscar uma empresa pelo CNPJ: " + cnpj);
-                Optional<EmpresaForm> empresaFormOptional = empresaService.getEmpresa(cnpj);
+                Optional<EmpresaForm> empresaFormOptional = empresaService.getEmpresa(cnpj.replaceAll("[^0-9]", ""));
                 LOGGER.info("Consulta do CNPJ feita");
 
                 if (empresaFormOptional.get().getNome() != null) {
@@ -119,5 +120,25 @@ public class EmpresaUseCase {
         }
         repository.save(empresaRepository);
         return ResponseEntity.ok(empresaRepository);
+    }
+
+    public Empresa retornarEmpresaPorCnpj(String cnpj) {
+        LOGGER.info("Metodo para mudar o vinculo da empresa do usuario");
+        Optional<Empresa> empresaOptional = repository.findById(cnpj);
+
+        if (empresaOptional.isPresent()) {
+            LOGGER.info("Empresa cadastrada no banco");
+            return empresaOptional.get();
+        }
+
+        LOGGER.info("Verificando empresa online");
+        Optional<EmpresaForm> empresaFormOptional = empresaService.getEmpresa(cnpj.replaceAll("[^0-9]", ""));
+        if (empresaFormOptional.get().getNome() != null) {
+            LOGGER.info("Retornando empresa do service");
+            repository.save(new Empresa(empresaFormOptional.get()));
+            return new Empresa(empresaFormOptional.get());
+        }
+        LOGGER.info("Nenhuma empresa cadastrada");
+        return new Empresa("123", "", "", "", "", "", "", "", 0.0);
     }
 }

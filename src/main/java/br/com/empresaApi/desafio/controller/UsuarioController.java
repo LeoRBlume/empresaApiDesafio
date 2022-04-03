@@ -1,10 +1,10 @@
 package br.com.empresaApi.desafio.controller;
 
 import br.com.empresaApi.desafio.controller.dto.UsuarioDto;
-import br.com.empresaApi.desafio.model.Empresa;
-import br.com.empresaApi.desafio.model.Usuario;
 import br.com.empresaApi.desafio.controller.form.AtualizacaoCadastroForm;
+import br.com.empresaApi.desafio.controller.form.CnpjForm;
 import br.com.empresaApi.desafio.controller.form.UsuarioForm;
+import br.com.empresaApi.desafio.model.Empresa;
 import br.com.empresaApi.desafio.useCase.UsuarioUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,21 +23,12 @@ public class UsuarioController {
 
     @Autowired
     UsuarioUseCase useCase;
-    
+
     @GetMapping
-    public ResponseEntity<UsuarioDto> obterUsuario(@RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<UsuarioDto> obterUsuario(@RequestHeader(value = "Authorization") String token) {
         LOGGER.info("Metodo para retornar o usuario...");
         ResponseEntity<UsuarioDto> response = useCase.obterUsuario(token);
         LOGGER.info("Usuario retornado!");
-        return response;
-    }
-
-    @GetMapping
-    @RequestMapping("/empresa")
-    public ResponseEntity<Empresa> obterDadosEmpresaUsuario(@RequestHeader(value = "Authorization") String token) {
-        LOGGER.info("Chamando endpoint para obter dados da empresa do usuario...");
-        ResponseEntity<Empresa> response = useCase.obterDadosEmpresaUsuario(token);
-        LOGGER.info("Chamando endpoint para obter dados da empresa do usuario!");
         return response;
     }
 
@@ -57,4 +48,21 @@ public class UsuarioController {
         return response;
     }
 
+    @GetMapping
+    @RequestMapping("/empresa")
+    public ResponseEntity<Empresa> obterDadosEmpresaUsuario(@RequestHeader(value = "Authorization") String token) {
+        LOGGER.info("Chamando endpoint para obter dados da empresa do usuario...");
+        ResponseEntity<Empresa> response = useCase.obterDadosEmpresaUsuario(token);
+        LOGGER.info("Dados da empresa do usuario retornado!");
+        return response;
+    }
+
+    @PutMapping
+    @RequestMapping("/mudarVinculo")
+    public ResponseEntity<?> mudarVinculoEmpresa(@RequestHeader(value = "Authorization") String token, @Valid @RequestBody CnpjForm cnpj) {
+        LOGGER.info("Chamando endpoint para mudar a empresa do usuario...");
+        ResponseEntity<?> response = useCase.mudarEmpresaUsuario(token, cnpj.getCnpj());
+        LOGGER.info("Metodo para mudarar a empresa do usuario finalizado!");
+        return response;
+    }
 }

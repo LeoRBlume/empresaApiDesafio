@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class UsuarioForm {
 
@@ -24,6 +25,7 @@ public class UsuarioForm {
 
     @NotNull
     @NotBlank(message = "CNPJ é obrigatorio!!")
+    @Pattern(regexp = "(^\\d{2}.\\d{3}.\\d{3}/\\d{4}-\\d{2}$)")
     private String cnpj;
 
     public String getNome() {

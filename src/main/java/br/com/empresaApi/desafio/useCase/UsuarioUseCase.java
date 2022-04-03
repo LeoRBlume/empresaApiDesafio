@@ -139,9 +139,28 @@ public class UsuarioUseCase {
     }
 
     public ResponseEntity<UsuarioDto> obterUsuario(String token) {
-        token = tokenService.recuperarToken(token);
-        Usuario usuario = usuarioRepository.getById(tokenService.getIdUsuario(token));
+        Usuario usuario = usuarioToken(token);
         UsuarioDto usuarioDto = UsuarioDto.converter(usuario);
         return ResponseEntity.ok(usuarioDto);
+    }
+
+    private Usuario usuarioToken(String token) {
+        token = tokenService.recuperarToken(token);
+        return usuarioRepository.getById(tokenService.getIdUsuario(token));
+    }
+
+    public ResponseEntity<UsuarioDto> mudarEmpresaUsuario(String token, String cnpj) {
+        Usuario usuario = usuarioToken(token);
+        LOGGER.info("Chamando metodo para obter empresa com o cnpj: " + cnpj);
+        Empresa empresaNova = empresaUseCase.retornarEmpresaPorCnpj(cnpj);
+        if(!(empresaNova.getNome().length() == 0)){
+            LOGGER.info("Empresa encontrada, atribuindo empresa");
+            usuario.setEmpresa(empresaNova);
+            usuarioRepository.save(usuario);
+            UsuarioDto usuarioDto = UsuarioDto.converter(usuario);
+            return ResponseEntity.ok(usuarioDto);
+        }
+        LOGGER.info("Empresa não encontrada");
+        return new ResponseEntity<>( HttpStatus.NOT_FOUND);
     }
 }

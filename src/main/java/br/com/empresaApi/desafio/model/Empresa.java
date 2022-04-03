@@ -54,7 +54,7 @@ public class Empresa {
         this.cep = empresaForm.getCep();
         this.fantasia = empresaForm.getFantasia();
         this.cnpj = empresaForm.getCnpj();
-        this.capital_social = (empresaForm.getCapital_social() != null && empresaForm.getCapital_social().equals("")) ? Double.parseDouble(empresaForm.getCapital_social()) : 0.0;
+        this.capital_social = (empresaForm.getCapital_social() != null && !(empresaForm.getCapital_social().equals(""))) ? Double.parseDouble(empresaForm.getCapital_social()) : 0.0;
     }
 
     public static Empresa init(String cnpj) {
