@@ -44,17 +44,4 @@ public class UsuarioControllerTest {
                         status().is(400));
 
     }
-    @Test
-    public void deveriaPermitirCadastrarUmUsuarioIncluindoUmCnpjValidoParaTeste() throws Exception {
-        URI uri = new URI("/usuario");
-        String json = "{\"nome\": \"nomeTeste\",\"email\": \"teste@teste.com\",\"senha\":\"1234567\",\"cnpj\": \"15.436.940/0001-03\"}";
-
-        mockMvc.
-                perform(MockMvcRequestBuilders.post(uri)
-                        .content(json)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.
-                        status().is(200));
-
-    }
 }

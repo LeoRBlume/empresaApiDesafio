@@ -60,6 +60,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>empresa-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
