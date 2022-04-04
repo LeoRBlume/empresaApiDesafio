@@ -36,4 +36,13 @@ public class EmpresaController {
         return response;
     }
 
+    @GetMapping
+    @RequestMapping("/listar")
+    public ResponseEntity<?> listarEmpresas(){
+        LOGGER.info("Endpoint para listar todas as empresas...");
+        ResponseEntity<?> response = useCase.listarEmpresas();
+        LOGGER.info("Endpoint para listar todas as empresas finalizado!");
+        return response;
+    }
+
 }

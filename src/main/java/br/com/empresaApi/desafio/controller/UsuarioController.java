@@ -25,7 +25,7 @@ public class UsuarioController {
     UsuarioUseCase useCase;
 
     @GetMapping
-    public ResponseEntity<UsuarioDto> obterUsuario(@RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<UsuarioDto> obterUsuarioLogado(@RequestHeader(value = "Authorization") String token) {
         LOGGER.info("Metodo para retornar o usuario...");
         ResponseEntity<UsuarioDto> response = useCase.obterUsuario(token);
         LOGGER.info("Usuario retornado!");
@@ -63,6 +63,14 @@ public class UsuarioController {
         LOGGER.info("Chamando endpoint para mudar a empresa do usuario...");
         ResponseEntity<?> response = useCase.mudarEmpresaUsuario(token, cnpj.getCnpj());
         LOGGER.info("Metodo para mudarar a empresa do usuario finalizado!");
+        return response;
+    }
+    @GetMapping
+    @RequestMapping("/listar")
+    public ResponseEntity<?> listarTodosUsuario(){
+        LOGGER.info("Endpoint para listar todos os usuarios...");
+        ResponseEntity<?> response = useCase.listarTodosUsuario();
+        LOGGER.info("Metodo para listar todos os usuarios finalizado!");
         return response;
     }
 }

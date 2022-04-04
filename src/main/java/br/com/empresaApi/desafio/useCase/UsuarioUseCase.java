@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -162,5 +164,18 @@ public class UsuarioUseCase {
         }
         LOGGER.info("Empresa não encontrada");
         return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> listarTodosUsuario() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        usuarios.remove(usuarioRepository.findByEmail("admin@root.com").get());
+
+        List<UsuarioDto> usuarioDtos = new ArrayList<>();
+
+        for (Usuario u : usuarios){
+            usuarioDtos.add(UsuarioDto.converter(u));
+        }
+
+        return ResponseEntity.ok(usuarioDtos);
     }
 }

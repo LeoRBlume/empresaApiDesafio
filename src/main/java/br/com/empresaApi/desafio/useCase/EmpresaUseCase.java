@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -140,5 +141,11 @@ public class EmpresaUseCase {
         }
         LOGGER.info("Nenhuma empresa cadastrada");
         return new Empresa("123", "", "", "", "", "", "", "", 0.0);
+    }
+
+    public ResponseEntity<?> listarEmpresas() {
+        List<Empresa> empresas = repository.findAll();
+        empresas.remove(repository.getById("1"));
+        return ResponseEntity.ok(empresas);
     }
 }
